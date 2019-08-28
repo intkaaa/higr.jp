@@ -2,8 +2,7 @@
   main.main
     .content
       h1.title
-        span HIGHER
-        nuxt-link(to="/")
+        nuxt-link(to="/", aria-label="HIGHER")
           Logo
 
       .wrap
@@ -56,8 +55,6 @@ if (process.browser) {
 
   .title
     overflow hidden
-    span
-      display none
     a
       display inline-block
       opacity 0
