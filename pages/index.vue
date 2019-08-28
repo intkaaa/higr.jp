@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import viewportUnitsBuggyfill from 'viewport-units-buggyfill'
 import Logo from '~/components/Logo.vue'
 
 export default {
@@ -32,6 +33,9 @@ export default {
     Logo
   },
   mounted() {
+    viewportUnitsBuggyfill.init()
+    window.addEventListener('resize', viewportUnitsBuggyfill.refresh, true)
+
     setTimeout(function() {
       document.body.classList.add('loaded')
     }, 1000)
@@ -84,7 +88,8 @@ export default {
           font-size 5.98958vw
           line-height 140%
         +sp()
-          font-size 8vw
+          font-size 6.2vw
+          line-height 152%
         > span
           display block
           overflow hidden
@@ -98,12 +103,16 @@ export default {
         margin-top 40px
         +tl()
           margin-top 32px
+        +sp()
+          margin-top 20px
 
         .list
           margin-top 24px
           overflow hidden
           +tl()
             margin-top 18px
+          +sp()
+            margin-top 12px
           &:nth-of-type(1)
             margin-top 0
             a
