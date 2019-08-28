@@ -129,7 +129,7 @@ if (process.browser) {
             line-height 1
             letter-spacing .04rem
             opacity 0
-            transform translateY(105%) translateZ(0)
+            transform translateY(110%) translateZ(0)
             transition transform .8s cubic-bezier(.165,.84,.44,1)
             +tl()
               font-size 1.5625vw
