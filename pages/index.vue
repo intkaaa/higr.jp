@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import viewportUnitsBuggyfill from 'viewport-units-buggyfill'
 import Logo from '~/components/Logo.vue'
 
 export default {
@@ -33,13 +32,15 @@ export default {
     Logo
   },
   mounted() {
-    viewportUnitsBuggyfill.init()
-    window.addEventListener('resize', viewportUnitsBuggyfill.refresh, true)
-
     setTimeout(function() {
       document.body.classList.add('loaded')
     }, 1000)
   }
+}
+
+if (process.browser) {
+  const viewportUnitsBuggyfill = require('viewport-units-buggyfill')
+  viewportUnitsBuggyfill.init()
 }
 </script>
 
