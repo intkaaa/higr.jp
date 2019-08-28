@@ -34,6 +34,9 @@ export default {
     setTimeout(function() {
       document.body.classList.add('loaded')
     }, 1000)
+
+    let height = window.innerHeight
+    document.querySelector('.main').style.height = height + 'px'
   }
 }
 
