@@ -39,8 +39,8 @@ export default {
       const viewportUnitsBuggyfill = require('viewport-units-buggyfill')
       viewportUnitsBuggyfill.init()
 
-      let height = window.innerHeight
-      document.querySelector('.main').style.height = height + 'px'
+      // let height = window.innerHeight
+      // document.querySelector('.main').style.height = height + 'px'
     })
   }
 }
