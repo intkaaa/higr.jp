@@ -31,18 +31,18 @@ export default {
     Logo
   },
   mounted() {
-    setTimeout(function() {
-      document.body.classList.add('loaded')
-    }, 1000)
+    this.$nextTick(() => {
+      setTimeout(function() {
+        document.body.classList.add('loaded')
+      }, 1000)
+
+      const viewportUnitsBuggyfill = require('viewport-units-buggyfill')
+      viewportUnitsBuggyfill.init()
+    })
 
     // let height = window.innerHeight
     // document.querySelector('.main').style.height = height + 'px'
   }
-}
-
-if (process.browser) {
-  const viewportUnitsBuggyfill = require('viewport-units-buggyfill')
-  viewportUnitsBuggyfill.init()
 }
 </script>
 
