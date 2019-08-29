@@ -36,11 +36,11 @@ export default {
         document.body.classList.add('loaded')
       }, 1000)
 
+      let height = window.innerHeight
+      document.querySelector('.main').style.height = height + 'px'
+
       const viewportUnitsBuggyfill = require('viewport-units-buggyfill')
       viewportUnitsBuggyfill.init()
-
-      // let height = window.innerHeight
-      // document.querySelector('.main').style.height = height + 'px'
     })
   }
 }
