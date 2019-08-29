@@ -62,7 +62,7 @@ export default {
       display inline-block
       opacity 0
       transform translateY(105%) translateZ(0)
-      transition transform .8s cubic-bezier(.165,.84,.44,1) .6s
+      transition .8s cubic-bezier(.165,.84,.44,1) .6s
 
   .content
     display flex
@@ -98,7 +98,7 @@ export default {
             display block
             opacity 0
             transform translateY(105%) translateZ(0)
-            transition transform .8s cubic-bezier(.165,.84,.44,1) .6s
+            transition .8s cubic-bezier(.165,.84,.44,1) .6s
 
       .lists
         margin-top 40px
@@ -133,7 +133,7 @@ export default {
             letter-spacing .04rem
             opacity 0
             transform translateY(110%) translateZ(0)
-            transition transform .8s cubic-bezier(.165,.84,.44,1)
+            transition .8s cubic-bezier(.165,.84,.44,1)
             +tl()
               font-size 1.5625vw
             +sp()
@@ -152,7 +152,7 @@ export default {
         display inline-block
         opacity 0
         transform translateY(105%) translateZ(0)
-        transition transform .8s cubic-bezier(.165,.84,.44,1) 1.1s
+        transition .8s cubic-bezier(.165,.84,.44,1) 1.1s
       a
         display flex
         align-items center
