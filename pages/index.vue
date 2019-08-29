@@ -35,8 +35,8 @@ export default {
       document.body.classList.add('loaded')
     }, 1000)
 
-    let height = window.innerHeight
-    document.querySelector('.main').style.height = height + 'px'
+    // let height = window.innerHeight
+    // document.querySelector('.main').style.height = height + 'px'
   }
 }
 
@@ -49,7 +49,7 @@ if (process.browser) {
 <style lang="stylus">
 .main
   width 75%
-  height 100vh
+  height 100%
   padding 80px 0
   margin auto
   +tl()
