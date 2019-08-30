@@ -1,26 +1,28 @@
 <template lang="pug">
-  main.main
-    .content
-      h1.title
-        nuxt-link(to="/", aria-label="HIGHER")
-          Logo
+  .container(@mousemove="onMouseMove")
+    .cursor(ref="cursor") #[.pointer]
+    main.main
+      .content
+        h1.title(@mouseenter="mouseEnter", @mouseleave="mouseLeave")
+          a(href="/", aria-label="HIGHER")
+            Logo
 
-      .wrap
-        p.copy
-          span #[span Hi. My name is Taka.]
-          span #[span I’m a designer and developer]
-          span #[span based in Tokyo.]
-        ul.lists
-          li.list
-            a(href="https://dribbble.com/intkaaa", target="_blank", rel="noopener") dribbble.com#[span /intkaaa]
-          li.list
-            a(href="https://twitter.com/intkaaa", target="_blank", rel="noopener") twitter.com#[span /intkaaa]
-          li.list
-            a(href="https://note.mu/intkaaa", target="_blank", rel="noopener") note.mu#[span /intkaaa]
+        .wrap
+          p.copy
+            span #[span Hi. My name is Taka.]
+            span #[span I’m a designer and developer]
+            span #[span based in Tokyo.]
+          ul.lists
+            li.list
+              a(href="https://dribbble.com/intkaaa", target="_blank", rel="noopener", @mouseenter="mouseEnter", @mouseleave="mouseLeave") dribbble.com#[span /intkaaa]
+            li.list
+              a(href="https://twitter.com/intkaaa", target="_blank", rel="noopener", @mouseenter="mouseEnter", @mouseleave="mouseLeave") twitter.com#[span /intkaaa]
+            li.list
+              a(href="https://note.mu/intkaaa", target="_blank", rel="noopener", @mouseenter="mouseEnter", @mouseleave="mouseLeave") note.mu#[span /intkaaa]
 
-      .contact
-        span
-          a(href="https://m.me/intkaaa", target="_blank", rel="noopener") Say hi. #[img(src="/messenger.svg", alt="messenger")]
+        .contact
+          span
+            a(href="https://m.me/intkaaa", target="_blank", rel="noopener", @mouseenter="mouseEnter", @mouseleave="mouseLeave") Say hi. #[img(src="/messenger.svg", alt="messenger")]
 </template>
 
 <script>
@@ -30,11 +32,23 @@ export default {
   components: {
     Logo
   },
+
+  data() {
+    return {
+      cursorWidth: 26,
+      mouseX: 0,
+      mouseY: 0
+    }
+  },
+
   mounted() {
     this.$nextTick(() => {
       setTimeout(function() {
         document.body.classList.add('loaded')
       }, 1000)
+      setTimeout(function() {
+        document.body.classList.add('pointer-active')
+      }, 1800)
 
       // let height = window.innerHeight
       // document.querySelector('.main').style.height = height + 'px'
@@ -42,11 +56,48 @@ export default {
       const viewportUnitsBuggyfill = require('viewport-units-buggyfill')
       viewportUnitsBuggyfill.init()
     })
+  },
+
+  methods: {
+    onMouseMove(e) {
+      let cursorWidth = 50
+
+      this.$refs.cursor.style.left = e.pageX - cursorWidth / 2 + 'px'
+      this.$refs.cursor.style.top = e.pageY - cursorWidth / 2 + 'px'
+    },
+    mouseEnter() {
+      this.$refs.cursor.classList.add('is-mouseenter')
+    },
+    mouseLeave() {
+      this.$refs.cursor.classList.remove('is-mouseenter')
+    }
   }
 }
 </script>
 
 <style lang="stylus">
+.container
+  position relative
+  cursor none
+
+.cursor
+  @media(hover: hover)
+    position absolute
+    top 0
+    left 0
+    &.is-mouseenter
+      .pointer
+        transform scale(0.3)
+        background-color base
+    .pointer
+      width 50px
+      height 50px
+      border 1px solid white
+      border-radius 50%
+      cursor none
+      posinter-events none
+      transition .4s
+
 .main
   width 75%
   height 100vh
@@ -78,7 +129,7 @@ export default {
       width 100%
 
       .copy
-        margin-top -8%
+        margin-top -5%
         color base
         font-family minion-pro-caption
         font-size 6vh
@@ -90,8 +141,9 @@ export default {
           font-size 5.98958vw
           line-height 140%
         +sp()
-          font-size 6.2vw
+          font-size 6.8vw
           line-height 152%
+          letter-spacing 0
         > span
           display block
           overflow hidden
@@ -102,19 +154,19 @@ export default {
             transition .8s cubic-bezier(.165,.84,.44,1) .6s
 
       .lists
-        margin-top 40px
+        margin-top 28px
         +tl()
-          margin-top 32px
+          margin-top 24px
         +sp()
-          margin-top 20px
+          margin-top 16px
 
         .list
-          margin-top 24px
+          margin-top 4px
           overflow hidden
           +tl()
-            margin-top 18px
+            margin-top 4px
           +sp()
-            margin-top 12px
+            margin-top 4px
           &:nth-of-type(1)
             margin-top 0
             a
@@ -127,6 +179,7 @@ export default {
               transition-delay 1.1s
           a
             display inline-block
+            padding 10px 0
             color base
             font-family museo-sans
             font-size 2vh
@@ -138,6 +191,7 @@ export default {
             +tl()
               font-size 1.5625vw
             +sp()
+              padding 6px 0
               font-size 3.2vw
             span
               color base_pale
@@ -157,6 +211,7 @@ export default {
       a
         display flex
         align-items center
+        padding 10px 0
         color base_pale
         font-family museo-sans
         font-size 1.2rem
@@ -188,4 +243,8 @@ export default {
   .contact span
     opacity 1 !important
     transform translateZ(0) !important
+
+.pointer-active
+  .pointer
+    border-color base
 </style>
