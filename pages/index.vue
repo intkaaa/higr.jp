@@ -192,7 +192,7 @@ export default {
               font-size 1.5625vw
             +sp()
               padding 6px 0
-              font-size 3.2vw
+              font-size 3.46666vw
             span
               color base_pale
               transition .6s
