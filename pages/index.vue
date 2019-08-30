@@ -8,7 +8,7 @@
       .wrap
         p.copy
           span #[span Hi. My name is Taka.]
-          span #[span I’m Designer and Developer]
+          span #[span I’m a designer and developer]
           span #[span based in Tokyo.]
         ul.lists
           li.list
