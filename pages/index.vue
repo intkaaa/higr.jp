@@ -54,7 +54,7 @@ export default {
   margin auto
   +tl()
     width 84%
-    padding 13.3333vw 0
+    padding 9.3333vw 0
 
   .title
     overflow hidden
@@ -75,6 +75,7 @@ export default {
       flex-direction column
       justify-content center
       flex-grow 1
+      width 100%
 
       .copy
         margin-top -8%
