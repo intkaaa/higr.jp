@@ -49,7 +49,6 @@ export default {
 <style lang="stylus">
 .main
   width 75%
-  height 100%
   padding 80px 0
   margin auto
   +tl()
