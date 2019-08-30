@@ -53,8 +53,8 @@ export default {
   padding 80px 0
   margin auto
   +tl()
-    width 80%
-    padding 10.6666vw 0
+    width 84%
+    padding 13.3333vw 0
 
   .title
     overflow hidden
