@@ -129,7 +129,7 @@ export default {
       width 100%
 
       .copy
-        margin-top -5%
+        margin-top -1%
         color base
         font-family minion-pro-caption
         font-size 6vh
