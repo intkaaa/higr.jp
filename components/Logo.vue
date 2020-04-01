@@ -9,4 +9,8 @@
 <style lang="stylus" scoped>
 .logo
   display inline-block
+  path
+    fill base
+    [data-mode="dark"] &
+      fill dark_accent
 </style>

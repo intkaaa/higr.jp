@@ -1,28 +1,43 @@
 <template lang="pug">
   .container(@mousemove="onMouseMove")
-    .cursor(ref="cursor") #[.pointer]
+    .cursor(ref="cursor")
+      .cursor__pointer
+
     main.main
       .content
-        h1.title(@mouseenter="mouseEnter", @mouseleave="mouseLeave")
-          a(href="/", aria-label="HIGHER")
+        h1.content__title.title(@mouseenter="mouseEnter", @mouseleave="mouseLeave")
+          a.title__wrap(href="/", aria-label="Higher")
             Logo
 
-        .wrap
-          p.copy
-            span #[span Hi. My name is Taka.]
-            span #[span I’m a designer and developer]
-            span #[span based in Tokyo.]
-          ul.lists
-            li.list
-              a(href="https://dribbble.com/intkaaa", target="_blank", rel="noopener", @mouseenter="mouseEnter", @mouseleave="mouseLeave") dribbble.com#[span /intkaaa]
-            li.list
-              a(href="https://twitter.com/intkaaa", target="_blank", rel="noopener", @mouseenter="mouseEnter", @mouseleave="mouseLeave") twitter.com#[span /intkaaa]
-            li.list
-              a(href="https://note.mu/intkaaa", target="_blank", rel="noopener", @mouseenter="mouseEnter", @mouseleave="mouseLeave") note.mu#[span /intkaaa]
+        .content__read.read
+          p.read__copy.copy
+            span.copy__row
+              span.copy__text Hi. My name is Taka.
+            span.copy__row
+              span.copy__text I’m a designer and developer
+            span.copy__row
+              span.copy__text based in Tokyo.
 
-        .contact
-          span
-            a(href="https://m.me/intkaaa", target="_blank", rel="noopener", @mouseenter="mouseEnter", @mouseleave="mouseLeave") Say hi. #[img(src="/messenger.svg", alt="messenger")]
+          ul.read__lists.lists
+            li.lists__list.list
+              a.list__link(href="https://dribbble.com/intkaaa", target="_blank", @mouseenter="mouseEnter", @mouseleave="mouseLeave")
+                span.list__service dribbble.com
+                  span.list__account /intkaaa
+
+            li.lists__list.list
+              a.list__link(href="https://twitter.com/intkaaa", target="_blank", @mouseenter="mouseEnter", @mouseleave="mouseLeave")
+                span.list__service twitter.com
+                  span.list__account /intkaaa
+
+            li.lists__list.list
+              a.list__link(href="https://note.mu/intkaaa", target="_blank", @mouseenter="mouseEnter", @mouseleave="mouseLeave")
+                span.list__service note.mu
+                  span.list__account /intkaaa
+
+        .content__contact.contact
+          span.contact__wrap
+            a.contact__link(href="https://m.me/intkaaa", target="_blank", @mouseenter="mouseEnter", @mouseleave="mouseLeave") Say hi.
+              img.contact__icon(src="/messenger.svg", alt="messenger")
 </template>
 
 <script>
@@ -56,50 +71,100 @@ export default {
       const viewportUnitsBuggyfill = require('viewport-units-buggyfill')
       viewportUnitsBuggyfill.init()
     })
+
+    // DarkTheme
+    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.setAttribute('data-mode', 'dark')
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
+      if (e.matches) {
+        document.documentElement.setAttribute('data-mode', 'dark')
+      } else {
+        document.documentElement.setAttribute('data-mode', 'light')
+      }
+    })
   },
 
   methods: {
     onMouseMove(e) {
-      let cursorWidth = 50
-
+      let cursorWidth = 30
       this.$refs.cursor.style.left = e.pageX - cursorWidth / 2 + 'px'
       this.$refs.cursor.style.top = e.pageY - cursorWidth / 2 + 'px'
     },
     mouseEnter() {
-      this.$refs.cursor.classList.add('is-mouseenter')
+      this.$refs.cursor.classList.add('is-mouseEnter')
     },
     mouseLeave() {
-      this.$refs.cursor.classList.remove('is-mouseenter')
+      this.$refs.cursor.classList.remove('is-mouseEnter')
     }
   }
 }
 </script>
 
 <style lang="stylus">
+html
+  color base
+  background white
+  &[data-mode="dark"]
+    color dark_accent
+    background dark_base
+
 .container
   position relative
   cursor none
+  &::before
+    content ''
+    position fixed
+    top -100%
+    left -50%
+    width 300%
+    height 300%
+    opacity 0.2
+    background-image url('/noise.png')
+    animation grain 8s steps(10) infinite
+    [data-mode="dark"] &
+      opacity 0.015
+      background-image url('/noise_invert.png')
+
+@keyframes grain
+  0%, 100% { transform:translate(0, 0) }
+  10% { transform:translate(-5%, -10%) }
+  20% { transform:translate(-15%, 5%) }
+  30% { transform:translate(7%, -25%) }
+  40% { transform:translate(-5%, 25%) }
+  50% { transform:translate(-15%, 10%) }
+  60% { transform:translate(15%, 0%) }
+  70% { transform:translate(0%, 15%) }
+  80% { transform:translate(3%, 35%) }
+  90% { transform:translate(-10%, 10%) }
 
 .cursor
-  @media(hover: hover)
+  root = selector()
+  +pointer-device()
     position absolute
     top 0
     left 0
-    &.is-mouseenter
-      .pointer
-        transform scale(0.3)
+    &.is-mouseEnter
+      {root}__pointer
+        transform scale(0.5)
         background-color base
-    .pointer
-      width 50px
-      height 50px
-      border 1px solid white
+    &__pointer
+      width 30px
+      height 30px
+      border 2px solid white
       border-radius 50%
       cursor none
       posinter-events none
       transition .4s
+      [data-mode="dark"]
+        border-color dark_accent
+
+.pointer-active
+  .cursor__pointer
+    border-color base
 
 .main
-  width 75%
+  width 80%
   height 100vh
   padding 80px 0
   margin auto
@@ -107,144 +172,141 @@ export default {
     width 84%
     padding 9.3333vw 0
 
-  .title
+.content
+  display flex
+  flex-direction column
+  align-items flex-start
+  height 100%
+
+.title
+  overflow hidden
+  &__wrap
+    display inline-block
+    // opacity 0
+    // transform translateY(105%) translateZ(0)
+    // transition .8s cubic-bezier(.165,.84,.44,1) .6s
+
+.read
+  display flex
+  flex-direction column
+  justify-content center
+  flex-grow 1
+  width 100%
+  &__copy
+    margin-top -1%
+  &__lists
+    margin-top 28px
+    +tl()
+      margin-top 24px
+    +sp()
+      margin-top 16px
+
+.copy
+  font-family minion-pro-caption
+  font-size 6vh
+  line-height 128%
+  letter-spacing .08rem
+  transition .6s
+  +tl()
+    margin-top -18%
+    font-size 5.98958vw
+    line-height 140%
+  +sp()
+    font-size 6.8vw
+    line-height 152%
+    letter-spacing 0
+  &__row
+    display block
     overflow hidden
-    a
-      display inline-block
-      opacity 0
-      transform translateY(105%) translateZ(0)
-      transition .8s cubic-bezier(.165,.84,.44,1) .6s
+  &__text
+    display block
+    opacity 0
+    transform translateY(105%) translateZ(0)
+    transition .8s cubic-bezier(.165,.84,.44,1) .6s
 
-  .content
+.lists
+  &__list
+    margin-top 4px
+    +tl()
+      margin-top 4px
+    +sp()
+      margin-top 4px
+    &:nth-of-type(1)
+      margin-top 0
+
+.list
+  root = selector()
+  overflow hidden
+  for i in (1..3)
+    &:nth-of-type({i})
+      {root}__link
+        transition-delay: 0.7s;
+  &__link
+    display inline-block
+    padding 10px 0
+    color inherit
+    font-family museo-sans
+    font-size 2vh
+    line-height 1
+    letter-spacing .04rem
+    opacity 0
+    transform translateY(110%) translateZ(0)
+    transition .8s cubic-bezier(.165,.84,.44,1)
+    +tl()
+      font-size 1.5625vw
+    +sp()
+      padding 6px 0
+      font-size 3.46666vw
+  &__account
+    opacity opacity
+    transition .6s
+    +pointer-device()
+      &:hover
+        opacity 1
+
+.contact
+  root = selector()
+  overflow hidden
+  &__wrap
+    display inline-block
+    opacity 0
+    transform translateY(105%) translateZ(0)
+    transition .8s cubic-bezier(.165,.84,.44,1) 0.7s
+  &__link
     display flex
-    flex-direction column
-    align-items flex-start
-    height 100%
-
-    .wrap
-      display flex
-      flex-direction column
-      justify-content center
-      flex-grow 1
-      width 100%
-
-      .copy
-        margin-top -1%
-        color base
-        font-family minion-pro-caption
-        font-size 6vh
-        line-height 128%
-        letter-spacing .08rem
-        transition .6s
-        +tl()
-          margin-top -18%
-          font-size 5.98958vw
-          line-height 140%
-        +sp()
-          font-size 6.8vw
-          line-height 152%
-          letter-spacing 0
-        > span
-          display block
-          overflow hidden
-          > span
-            display block
-            opacity 0
-            transform translateY(105%) translateZ(0)
-            transition .8s cubic-bezier(.165,.84,.44,1) .6s
-
-      .lists
-        margin-top 28px
-        +tl()
-          margin-top 24px
-        +sp()
-          margin-top 16px
-
-        .list
-          margin-top 4px
-          overflow hidden
-          +tl()
-            margin-top 4px
-          +sp()
-            margin-top 4px
-          &:nth-of-type(1)
-            margin-top 0
-            a
-              transition-delay 0.8s
-          &:nth-of-type(2)
-            a
-              transition-delay 0.9s
-          &:nth-of-type(3)
-            a
-              transition-delay 1.1s
-          a
-            display inline-block
-            padding 10px 0
-            color base
-            font-family museo-sans
-            font-size 2vh
-            line-height 1
-            letter-spacing .04rem
-            opacity 0
-            transform translateY(110%) translateZ(0)
-            transition .8s cubic-bezier(.165,.84,.44,1)
-            +tl()
-              font-size 1.5625vw
-            +sp()
-              padding 6px 0
-              font-size 3.46666vw
-            span
-              color base_pale
-              transition .6s
-            @media(hover: hover)
-              &:hover
-                span
-                  color base
-
-    .contact
-      overflow hidden
-      span
-        display inline-block
-        opacity 0
-        transform translateY(105%) translateZ(0)
-        transition .8s cubic-bezier(.165,.84,.44,1) 1.1s
-      a
-        display flex
-        align-items center
-        padding 10px 0
-        color base_pale
-        font-family museo-sans
-        font-size 1.2rem
-        line-height 1
-        letter-spacing .04rem
-        transition .6s
-        +tl()
-          font-size 1.5625vw
-        +sp()
-          font-size 3.2vw
-        @media(hover: hover)
-          &:hover
-            color base
-            img
-              opacity 1
-        img
-          display inline-block
-          width 0.8vw
-          height auto
-          margin-top -2px
-          margin-left 4px
-          transition .2s
-          opacity 0
+    align-items center
+    padding 10px 0
+    color inherit
+    font-family museo-sans
+    font-size 1.2rem
+    line-height 1
+    letter-spacing .04rem
+    transition .6s
+    opacity opacity
+    +tl()
+      font-size 1.5625vw
+    +sp()
+      font-size 3.2vw
+    +pointer-device()
+      &:hover
+        opacity 1
+        {root}__icon
+          opacity 1
+  &__icon
+    display inline-block
+    width 0.8vw
+    height auto
+    margin-top -2px
+    margin-left 4px
+    transition .2s
+    opacity 0
 
 .loaded
-  .title a,
-  .copy > span > span,
-  .list a,
-  .contact span
+  // .title__wrap,
+  .copy__text,
+  .list__link,
+  .contact__wrap
     opacity 1 !important
     transform translateZ(0) !important
 
-.pointer-active
-  .pointer
-    border-color base
 </style>
