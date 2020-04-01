@@ -111,7 +111,7 @@ html
     left -50%
     width 300%
     height 300%
-    opacity 0.6
+    opacity 0.3
     background-image url('/noise.png')
     animation grain 8s steps(10) infinite
     [data-mode="dark"] &
