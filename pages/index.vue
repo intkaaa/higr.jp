@@ -35,6 +35,9 @@
           span.contact__wrap
             a.contact__link(href="https://m.me/intkaaa", target="_blank") Say hi.
               img.contact__icon(src="/messenger.svg", alt="messenger")
+
+        label.content__toggle.toggle
+          input#js-toggle.toggle__switch(type="checkbox")
 </template>
 
 <script>
@@ -55,15 +58,24 @@ export default {
       viewportUnitsBuggyfill.init()
     })
 
-    // DarkTheme
+    // Toggle
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
       document.documentElement.setAttribute('data-mode', 'dark')
+    } else if (window.matchMedia('(prefers-color-scheme: light)').matches) {
+      document.documentElement.setAttribute('data-mode', 'light')
     }
-    window.matchMedia('(prefers-color-scheme: dark)').addListener(e => {
-      if (e.matches) {
-        document.documentElement.setAttribute('data-mode', 'dark')
-      } else {
+    const checkToggle = document.getElementById('js-toggle')
+    let mode = document.documentElement.getAttribute('data-mode')
+    console.log(mode)
+    checkToggle.addEventListener('change', function(e) {
+      if (mode === 'dark') {
         document.documentElement.setAttribute('data-mode', 'light')
+        mode = 'light'
+        console.log(mode)
+      } else {
+        document.documentElement.setAttribute('data-mode', 'dark')
+        mode = 'dark'
+        console.log(mode)
       }
     })
   }
@@ -72,11 +84,23 @@ export default {
 
 <style lang="stylus">
 html
-  color base
-  background white
-  &[data-mode="dark"]
+  transition 0.4s
+  @media (prefers-color-scheme: light)
+    color base
+    border-color base
+    background white
+  @media (prefers-color-scheme: dark)
     color dark_accent
+    border-color dark_accent
     background dark_base
+  &[data-mode="light"]
+    color base !important
+    border-color base !important
+    background white !important
+  &[data-mode="dark"]
+    color dark_accent !important
+    border-color dark_accent !important
+    background dark_base !important
 
 .container
   position relative
@@ -87,11 +111,11 @@ html
     left -50%
     width 300%
     height 300%
-    opacity 0.2
+    opacity 0.6
     background-image url('/noise.png')
     animation grain 8s steps(10) infinite
     [data-mode="dark"] &
-      opacity 0.015
+      opacity 0.03
       background-image url('/noise_invert.png')
 
 @keyframes grain
@@ -112,6 +136,8 @@ html
   padding 80px 0
   margin auto
   +tl()
+    padding 9.3333vw 0
+  +sp()
     width 84%
     padding 9.3333vw 0
 
@@ -120,14 +146,18 @@ html
   flex-direction column
   align-items flex-start
   height 100%
+  &__toggle
+    position absolute
+    bottom 80px
+    right 10%
+    +sp()
+      bottom 40px
+      right 8%
 
 .title
   overflow hidden
   &__wrap
     display inline-block
-    // opacity 0
-    // transform translateY(105%) translateZ(0)
-    // transition .8s cubic-bezier(.165,.84,.44,1) .6s
 
 .read
   display flex
@@ -242,6 +272,16 @@ html
     margin-left 4px
     transition .2s
     opacity 0
+
+.toggle
+  width 24px
+  height 24px
+  border 2px solid
+  border-color inherit
+  border-radius 12px
+  cursor pointer
+  &__switch
+    display none
 
 .loaded
   // .title__wrap,
