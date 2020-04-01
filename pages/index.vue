@@ -1,11 +1,8 @@
 <template lang="pug">
-  .container(@mousemove="onMouseMove")
-    .cursor(ref="cursor")
-      .cursor__pointer
-
+  .container
     main.main
       .content
-        h1.content__title.title(@mouseenter="mouseEnter", @mouseleave="mouseLeave")
+        h1.content__title.title
           a.title__wrap(href="/", aria-label="Higher")
             Logo
 
@@ -20,23 +17,23 @@
 
           ul.read__lists.lists
             li.lists__list.list
-              a.list__link(href="https://dribbble.com/intkaaa", target="_blank", @mouseenter="mouseEnter", @mouseleave="mouseLeave")
+              a.list__link(href="https://dribbble.com/intkaaa", target="_blank")
                 span.list__service dribbble.com
                   span.list__account /intkaaa
 
             li.lists__list.list
-              a.list__link(href="https://twitter.com/intkaaa", target="_blank", @mouseenter="mouseEnter", @mouseleave="mouseLeave")
+              a.list__link(href="https://twitter.com/intkaaa", target="_blank")
                 span.list__service twitter.com
                   span.list__account /intkaaa
 
             li.lists__list.list
-              a.list__link(href="https://note.mu/intkaaa", target="_blank", @mouseenter="mouseEnter", @mouseleave="mouseLeave")
+              a.list__link(href="https://note.mu/intkaaa", target="_blank")
                 span.list__service note.mu
                   span.list__account /intkaaa
 
         .content__contact.contact
           span.contact__wrap
-            a.contact__link(href="https://m.me/intkaaa", target="_blank", @mouseenter="mouseEnter", @mouseleave="mouseLeave") Say hi.
+            a.contact__link(href="https://m.me/intkaaa", target="_blank") Say hi.
               img.contact__icon(src="/messenger.svg", alt="messenger")
 </template>
 
@@ -48,25 +45,11 @@ export default {
     Logo
   },
 
-  data() {
-    return {
-      cursorWidth: 26,
-      mouseX: 0,
-      mouseY: 0
-    }
-  },
-
   mounted() {
     this.$nextTick(() => {
       setTimeout(function() {
         document.body.classList.add('loaded')
       }, 1000)
-      setTimeout(function() {
-        document.body.classList.add('pointer-active')
-      }, 1800)
-
-      // let height = window.innerHeight
-      // document.querySelector('.main').style.height = height + 'px'
 
       const viewportUnitsBuggyfill = require('viewport-units-buggyfill')
       viewportUnitsBuggyfill.init()
@@ -83,20 +66,6 @@ export default {
         document.documentElement.setAttribute('data-mode', 'light')
       }
     })
-  },
-
-  methods: {
-    onMouseMove(e) {
-      let cursorWidth = 30
-      this.$refs.cursor.style.left = e.pageX - cursorWidth / 2 + 'px'
-      this.$refs.cursor.style.top = e.pageY - cursorWidth / 2 + 'px'
-    },
-    mouseEnter() {
-      this.$refs.cursor.classList.add('is-mouseEnter')
-    },
-    mouseLeave() {
-      this.$refs.cursor.classList.remove('is-mouseEnter')
-    }
   }
 }
 </script>
@@ -111,7 +80,6 @@ html
 
 .container
   position relative
-  cursor none
   &::before
     content ''
     position fixed
@@ -137,31 +105,6 @@ html
   70% { transform:translate(0%, 15%) }
   80% { transform:translate(3%, 35%) }
   90% { transform:translate(-10%, 10%) }
-
-.cursor
-  root = selector()
-  +pointer-device()
-    position absolute
-    top 0
-    left 0
-    &.is-mouseEnter
-      {root}__pointer
-        transform scale(0.5)
-        background-color base
-    &__pointer
-      width 30px
-      height 30px
-      border 2px solid white
-      border-radius 50%
-      cursor none
-      posinter-events none
-      transition .4s
-      [data-mode="dark"]
-        border-color dark_accent
-
-.pointer-active
-  .cursor__pointer
-    border-color base
 
 .main
   width 80%
