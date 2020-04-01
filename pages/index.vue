@@ -200,12 +200,13 @@ html
     +sp()
       padding 6px 0
       font-size 3.46666vw
-  &__account
-    opacity opacity
-    transition .6s
     +pointer-device()
       &:hover
-        opacity 1
+        {root}__account
+          opacity 1
+  &__account
+    opacity opacity
+    transition .4s
 
 .contact
   root = selector()
@@ -225,14 +226,12 @@ html
     line-height 1
     letter-spacing .04rem
     transition .6s
-    opacity opacity
     +tl()
       font-size 1.5625vw
     +sp()
       font-size 3.2vw
     +pointer-device()
       &:hover
-        opacity 1
         {root}__icon
           opacity 1
   &__icon
