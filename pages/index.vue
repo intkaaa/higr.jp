@@ -4,59 +4,61 @@
       .content
         h1.content__title.title
           a.title__wrap(href="/", aria-label="Higher")
-            Logo
+            Logo.js-loaded-fade
 
         .content__read.read
           p.read__copy.copy
             span.copy__row
-              span.copy__text Hi. My name is Taka.
+              span.copy__text.js-loaded-ease Hi. My name is Taka.
             span.copy__row
-              span.copy__text I’m a designer and developer
+              span.copy__text.js-loaded-ease I’m a designer and developer
             span.copy__row
-              span.copy__text based in Tokyo.
+              span.copy__text.js-loaded-ease based in Tokyo.
 
           ul.read__lists.lists
             li.lists__list.list
-              a.list__link(href="https://dribbble.com/intkaaa", target="_blank")
-                span.list__service dribbble.com
-                  span.list__account /intkaaa
+              a.list__link.js-loaded-ease(href="https://dribbble.com/intkaaa", target="_blank")
+                span.list__service dribbble
 
             li.lists__list.list
-              a.list__link(href="https://twitter.com/intkaaa", target="_blank")
-                span.list__service twitter.com
-                  span.list__account /intkaaa
+              a.list__link.js-loaded-ease(href="https://twitter.com/intkaaa", target="_blank")
+                span.list__service twitter
 
             li.lists__list.list
-              a.list__link(href="https://note.mu/intkaaa", target="_blank")
-                span.list__service note.mu
-                  span.list__account /intkaaa
+              a.list__link.js-loaded-ease(href="https://note.mu/intkaaa", target="_blank")
+                span.list__service note
 
         .content__contact.contact
-          span.contact__wrap
+          span.contact__wrap.js-loaded-ease
             a.contact__link(href="https://m.me/intkaaa", target="_blank") Say hi.
-              img.contact__icon(src="/messenger.svg", alt="messenger")
+              Messenger.contact__icon
 
-        label.content__toggle.toggle
+        label.content__toggle.toggle.js-loaded-fade
           input#js-toggle.toggle__switch(type="checkbox")
+          Dark.toggle__dark
 </template>
 
 <script>
 import Logo from '~/components/Logo.vue'
+import Messenger from '~/components/Messenger.vue'
+import Dark from '~/components/Dark.vue'
+import anime from 'animejs'
 
 export default {
   components: {
-    Logo
+    Logo,
+    Messenger,
+    Dark
   },
 
   mounted() {
     this.$nextTick(() => {
-      setTimeout(function() {
-        document.body.classList.add('loaded')
-      }, 1000)
-
       const viewportUnitsBuggyfill = require('viewport-units-buggyfill')
       viewportUnitsBuggyfill.init()
     })
+
+    this.loadedAnimEase()
+    this.loadedAnimFade()
 
     // Toggle
     if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -66,18 +68,37 @@ export default {
     }
     const checkToggle = document.getElementById('js-toggle')
     let mode = document.documentElement.getAttribute('data-mode')
-    console.log(mode)
     checkToggle.addEventListener('change', function(e) {
       if (mode === 'dark') {
         document.documentElement.setAttribute('data-mode', 'light')
         mode = 'light'
-        console.log(mode)
       } else {
         document.documentElement.setAttribute('data-mode', 'dark')
         mode = 'dark'
-        console.log(mode)
       }
     })
+  },
+
+  methods: {
+    loadedAnimEase() {
+      anime({
+        targets: '.js-loaded-ease',
+        translateY: ['105%', 0],
+        opacity: [0, 1],
+        easing: 'cubicBezier(.165,.84,.44,1)',
+        duration: 1200,
+        delay: 1000
+      })
+    },
+    loadedAnimFade() {
+      anime({
+        targets: '.js-loaded-fade',
+        opacity: [0, 1],
+        easing: 'cubicBezier(.165,.84,.44,1)',
+        duration: 1200,
+        delay: 100
+      })
+    }
   }
 }
 </script>
@@ -106,6 +127,7 @@ html
   position relative
   &::before
     content ''
+    z-index -1
     position fixed
     top -100%
     left -50%
@@ -115,7 +137,7 @@ html
     background-image url('/noise.png')
     animation grain 8s steps(10) infinite
     [data-mode="dark"] &
-      opacity 0.03
+      opacity 0.024
       background-image url('/noise_invert.png')
 
 @keyframes grain
@@ -166,22 +188,20 @@ html
   flex-grow 1
   width 100%
   &__copy
-    margin-top -1%
+    margin-top -6%
+    +tl()
+      margin-top -28%
   &__lists
-    margin-top 28px
+    margin-top 40px
     +tl()
       margin-top 24px
-    +sp()
-      margin-top 16px
 
 .copy
   font-family minion-pro-caption
   font-size 6vh
   line-height 128%
   letter-spacing .08rem
-  transition .6s
   +tl()
-    margin-top -18%
     font-size 5.98958vw
     line-height 140%
   +sp()
@@ -194,26 +214,14 @@ html
   &__text
     display block
     opacity 0
-    transform translateY(105%) translateZ(0)
-    transition .8s cubic-bezier(.165,.84,.44,1) .6s
 
 .lists
+  display flex
   &__list
-    margin-top 4px
-    +tl()
-      margin-top 4px
-    +sp()
-      margin-top 4px
-    &:nth-of-type(1)
-      margin-top 0
+    margin-right 28px
 
 .list
-  root = selector()
   overflow hidden
-  for i in (1..3)
-    &:nth-of-type({i})
-      {root}__link
-        transition-delay: 0.7s;
   &__link
     display inline-block
     padding 10px 0
@@ -223,20 +231,15 @@ html
     line-height 1
     letter-spacing .04rem
     opacity 0
-    transform translateY(110%) translateZ(0)
-    transition .8s cubic-bezier(.165,.84,.44,1)
     +tl()
       font-size 1.5625vw
     +sp()
       padding 6px 0
       font-size 3.46666vw
-    +pointer-device()
-      &:hover
-        {root}__account
-          opacity 1
+  &__service
+    display block
   &__account
     opacity opacity
-    transition .4s
 
 .contact
   root = selector()
@@ -244,8 +247,6 @@ html
   &__wrap
     display inline-block
     opacity 0
-    transform translateY(105%) translateZ(0)
-    transition .8s cubic-bezier(.165,.84,.44,1) 0.7s
   &__link
     display flex
     align-items center
@@ -255,7 +256,6 @@ html
     font-size 1.2rem
     line-height 1
     letter-spacing .04rem
-    transition .6s
     +tl()
       font-size 1.5625vw
     +sp()
@@ -265,30 +265,37 @@ html
         {root}__icon
           opacity 1
   &__icon
-    display inline-block
-    width 0.8vw
-    height auto
+    display block
+    width 1.2rem
+    height 1.2rem
     margin-top -2px
     margin-left 4px
     transition .2s
-    opacity 0
+    opacity 1
+    +pointer-device()
+      opacity 0
 
 .toggle
   width 24px
   height 24px
   border 2px solid
-  border-color inherit
   border-radius 12px
   cursor pointer
+  @media (prefers-color-scheme: light)
+    border-color inherit
+  [data-mode="light"] &
+    border-color inherit
+  @media (prefers-color-scheme: dark)
+    border-color transparent
+  [data-mode="dark"] &
+    border-color transparent
   &__switch
     display none
-
-.loaded
-  // .title__wrap,
-  .copy__text,
-  .list__link,
-  .contact__wrap
-    opacity 1 !important
-    transform translateZ(0) !important
+  &__dark
+    position absolute
+    bottom -2px
+    right -2px
+    width 24px
+    height 24px
 
 </style>

@@ -13,6 +13,7 @@
     "precommit": "npm run lint"
   },
   "dependencies": {
+    "animejs": "^3.1.0",
     "cross-env": "^5.2.0",
     "nuxt": "^2.0.0",
     "nuxt-stylus-resources-loader": "^2.0.0",
