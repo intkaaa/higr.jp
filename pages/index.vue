@@ -268,8 +268,8 @@ html
     display block
     width 1.2rem
     height 1.2rem
-    margin-top -2px
-    margin-left 4px
+    margin-top -2px !important
+    margin-left 4px !important
     transition .2s
     opacity 1
     +pointer-device()
